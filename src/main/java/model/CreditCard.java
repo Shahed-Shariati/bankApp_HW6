@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class CreditCard {
     private int id;
     private Account account;
@@ -71,6 +73,8 @@ public class CreditCard {
         return isAvtiveInt;
     }
 
+
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -105,7 +109,7 @@ public class CreditCard {
 
     @Override
     public String toString() {
-        numberCard = numberCard.substring(0,4) + '-' + numberCard.substring(4,8) + '-' + numberCard.substring(8,12) + '-' + numberCard.substring(12,16);
+      //  numberCard = numberCard.substring(0,4) + '-' + numberCard.substring(4,8) + '-' + numberCard.substring(8,12) + '-' + numberCard.substring(12,16);
         return   " ID:" + getId() + " "+ '\'' + numberCard + '\'' ;
     }
 }

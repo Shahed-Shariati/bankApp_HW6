@@ -45,4 +45,10 @@ public class AccountService {
           account.setCreditCard(creditCard);
           return account;
     }
+    public Account findByCardNumber(String cardNumber){
+        return accountRepository.findByCardNumber(cardNumber);
+    }
+    public void upDate(Account account){
+        accountRepository.upDate(account);
+    }
 }

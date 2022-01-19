@@ -148,5 +148,15 @@ public class CreditCardRepository implements Repository {
 
     }
 
-
+   public void failedPassword(CreditCard creditCard){
+        String query = "UPDATE creditcard set failed_password = failed_password + 1 WHERE id = ?";
+       try {
+           preparedStatement = connection.prepareStatement(query);
+           preparedStatement.setInt(1,creditCard.getId());
+           preparedStatement.executeUpdate();
+           preparedStatement.close();
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+   }
 }

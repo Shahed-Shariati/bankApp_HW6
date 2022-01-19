@@ -15,13 +15,7 @@ public class CreditCardService {
     }
     public CreditCard findByCreditCardNumber(String cardNumber)
     {
-        CreditCard creditCard = creditCardRepository.findByCardNumber(cardNumber);
-        if(creditCard != null){
-            return creditCard;
-        }else {
-            System.out.println("-------------------------- Not Found---------------------------");
-        }
-        return null;
+        return creditCardRepository.findByCardNumber(cardNumber);
     }
     public CreditCard findByAccountId(int id){
         CreditCard creditCard = creditCardRepository.findByAccountId(id);
@@ -40,5 +34,9 @@ public class CreditCardService {
   public void upDate(CreditCard creditCard)
   {
       creditCardRepository.upDate(creditCard);
+  }
+  public void failedPassword(CreditCard creditCard)
+  {
+      creditCardRepository.failedPassword(creditCard);
   }
 }

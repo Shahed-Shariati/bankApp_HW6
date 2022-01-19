@@ -1,15 +1,19 @@
 package utility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import model.CreditCard;
-import model.Customer;
-import model.User;
+import model.*;
+import org.postgresql.jdbc.UUIDArrayAssistant;
 import service.*;
 
 public class RunApplication {
     private UserService userService = new UserService();
+    private TransactionService transactionService = new TransactionService();
     ApplicationService applicationService = new ApplicationService();
     private AccountService accountService = new AccountService();
     private AccountCustomerService accountCustomerService = new AccountCustomerService();
@@ -17,7 +21,7 @@ public class RunApplication {
     private CustomerService customerService = new CustomerService();
  private Scanner input = new Scanner(System.in);
 
-public void runApplication(){
+public void runApplication() throws ParseException {
     while (true){
        Menu.loginMenu();
        System.out.println("Choice");
@@ -60,7 +64,7 @@ private void singUp(){
 
 }
 
-private void login(){
+private void login() throws ParseException {
     System.out.println("Enter user name and password");
     String[] input = getUserInput().trim().split(" +");
     if(input[0].equalsIgnoreCase("back")){
@@ -83,16 +87,17 @@ private void login(){
     }
 }
 
-    private void customerMenu(Customer customer){
+    private void customerMenu(Customer customer) throws ParseException {
 
         while (true){
             Menu.customerMenu();
             String input = getUserInput();
             if(input.equals("1")){
                 customerService.showCustomerAccount(String.valueOf (customer.getId()));
-
+                 transaction(customer.getId(),customer);
             }else if(input.equals("2")) {
-                addTransaction(customer.getId(),customer);
+                showCustomerCreditCard(customer);
+                transaction(customer.getId(),customer);
             }else if(input.equals("3")){
                 showCustomerCreditCard(customer);
                 changePassword();
@@ -275,24 +280,93 @@ private void login(){
     }
 
 
-    public void addTransaction(int id,Customer customer)
-    {
+    public void transaction(int id, Customer customer) throws ParseException {
 
-        customerService.showCustomerAccount(String.valueOf(id));
-        System.out.println("Choice your account");
-        String accountId = getUserInput();
-        System.out.println("Enter Destinaction card number");
-        String cardNumber = getUserInput();
-        System.out.println("enter your cvv");
-        String cvv = getUserInput();
-        System.out.println("enter your expire date");
-        String expireDate = getUserInput();
-        System.out.println("enter your destination card");
-        String destinsction = getUserInput();
-        System.out.println("Enter amount:");
-        String amount = getUserInput();
+        CreditCard creditCardSource;
+        CreditCard creditCardDestination;
+        LocalDate localDate = LocalDate.now();
+
+   while (true)
+   {
+     System.out.println("Enter back to return menu");
+     System.out.println("Choice your account");
+
+     String cardNumberSource = getUserInput();
+     if(cardNumberSource.equalsIgnoreCase("back"))
+     {
+         break;
+     }
+     if(Validation.cardNumber(cardNumberSource))
+     {
+         cardNumberSource = Validation.cardNumberReplace(cardNumberSource);
+         System.out.println("enter your cvv");
+         String cvv = getUserInput();
+         System.out.println("enter your expire date");
+         String expireDate = getUserInput();
+         System.out.println("Enter amount:");
+         String amount = getUserInput();
+         System.out.println("Enter your password online");
+         String passwordOnline = getUserInput();
+         System.out.println("Enter Destinaction card number");
+         String cardNumberDestination = getUserInput();
+
+         CreditCard cardCheck = new CreditCard(cardNumberSource,expireDate,Integer.parseInt(cvv),null,passwordOnline);
+         if(Validation.cardNumber(cardNumberDestination))
+         {
+             cardNumberSource = Validation.cardNumberReplace(cardNumberSource);
+             creditCardSource =  creditCardService.findByCreditCardNumber(cardNumberSource);
+             creditCardDestination = creditCardService.findByCreditCardNumber(cardNumberDestination);
+             if(creditCardSource != null && creditCardDestination != null)
+             {
+                if(checkCard(creditCardSource,cardCheck)){
+                    Account accountsource = accountService.findByCardNumber(cardNumberSource);
+                    Account accountDestination = accountService.findByCardNumber(cardNumberDestination);
+                    accountsource.setBalance( accountsource.getBalance() - Double.parseDouble(amount));
+                    accountDestination.setBalance(accountDestination.getBalance() + Double.parseDouble(amount));
+                    accountService.upDate(accountsource);
+                    accountService.upDate(accountDestination);
+
+
+                    Date today = new SimpleDateFormat("yyyy-MM-dd").parse(localDate.toString());
+                    Transaction transaction = new Transaction(accountsource,Double.parseDouble(amount),"Pending","withdraw",today,accountDestination);
+                    Transaction transaction1 = new Transaction(accountDestination,Double.parseDouble(amount),"Pending","deposit",today,accountsource);
+                    addTransaction(transaction);
+                    addTransaction(transaction1);
+                    System.out.println("-------------------------------------------------------------------------");
+                    System.out.println("-------------------------------------------------------------------------");
+                }
+
+
+             }
+         }else
+             {
+             System.out.println("---------your card number not valid----------------");
+            }
+     }else
+         {
+         System.out.println("---------your card number not valid----------------");
+        }
+
+
     }
 
+    }
+    private void addTransaction(Transaction transaction){
+     transactionService.addTransaction(transaction);
+    }
+    private Boolean checkCard(CreditCard creditCard,CreditCard cardCheck){
+        LocalDate localDate = LocalDate.now();
+        try {
+            Date today = new SimpleDateFormat("yyyy-MM-dd").parse(localDate.toString());
+            Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(creditCard.getExpireDate());
+            if(creditCard.getPasswordOnline().equals(cardCheck.getPasswordOnline()) && creditCard.getCvv() == cardCheck.getCvv() && today.before(date1) && creditCard.getExpireDate().equals(cardCheck.getExpireDate())){
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     private String getUserInput()
     {
         return input.nextLine().trim();
