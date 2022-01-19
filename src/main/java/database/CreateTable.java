@@ -11,19 +11,40 @@ public class CreateTable {
 //      createTableRole();
 //      insertIntoRole();
 //      createTableUser();
-   //     createTableClerk();
+  //     createTableBoss();
+    //   createTableClerk();
     //    createTableBank();
    //     createTableBankBranch();
      //   createTableCreditCard();
    //     createTableType();
     //    createTableAccount();
     //    createTableCustomer();
-        createBranchCustomer();
+    //    createBranchCustomer();
+    //    createTableAccountCustomer();
+        createTableTransaction();
 
     }
 
 
-
+  private void createTableTransaction()
+  {
+      String createStatement = "CREATE TABLE IF NOT EXISTS transactions (" +
+              "id SERIAL    PRIMARY KEY," +
+              "accountId     INTEGER ," +
+              "amount       DOUBLE PRECISION ," +
+              "status       varchar(10)," +
+              "types        varchar(10)," +
+              "transaction_date date ," +
+              "account_destination INTEGER ," +
+              "FOREIGN KEY (account_destination) REFERENCES account (id), " +
+              "FOREIGN KEY (accountId) REFERENCES account (id));";
+      try {
+          PreparedStatement transactionPrepared = connection.prepareStatement(createStatement);
+          transactionPrepared.execute();
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
+  }
 
 
   private void createTableUser()
@@ -90,12 +111,27 @@ public class CreateTable {
 
     }
 
-
+    private void createTableBoss()
+    {
+        String query = "CREATE TABLE IF NOT EXISTS boss(" +
+                "id SERIAL PRIMARY KEY," +
+                "user_id INTEGER," +
+                "FOREIGN KEY (user_id) REFERENCES users(id));";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private void createTableClerk()
     {
         String query = "CREATE TABLE IF NOT EXISTS clerks(" +
                 "id SERIAL PRIMARY KEY," +
                 "user_id INTEGER," +
+                "boss_id INTEGER ," +
+                "FOREIGN KEY (boss_id) REFERENCES boss(id),"+
                 "FOREIGN KEY (user_id) REFERENCES users(id));";
         try {
             preparedStatement = connection.prepareStatement(query);
@@ -198,7 +234,6 @@ public class CreateTable {
         String query = "CREATE TABLE IF NOT EXISTS customer(" +
                 "id SERIAL PRIMARY KEY," +
                 "user_id INTEGER," +
-                "account_id INTEGER ," +
                 "FOREIGN KEY (user_id) REFERENCES users(id)," +
                 "FOREIGN KEY (account_id) REFERENCES account(id));";
         try {
@@ -218,6 +253,23 @@ public class CreateTable {
                 "branch_id INTEGER," +
                 "customer_id INTEGER ," +
                 "FOREIGN KEY (branch_id) REFERENCES bankbranch(id)," +
+                "FOREIGN KEY (customer_id) REFERENCES customer(id));";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createTableAccountCustomer()
+    {
+        String query = "CREATE TABLE IF NOT EXISTS accoutncustoer(" +
+                "id SERIAL PRIMARY KEY," +
+                "account_id INTEGER," +
+                "customer_id INTEGER ," +
+                "FOREIGN KEY (account_id) REFERENCES account(id)," +
                 "FOREIGN KEY (customer_id) REFERENCES customer(id));";
         try {
             preparedStatement = connection.prepareStatement(query);
