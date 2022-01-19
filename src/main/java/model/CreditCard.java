@@ -11,11 +11,29 @@ public class CreditCard {
     private boolean isActive;
     private int isAvtiveInt;
 
-    public CreditCard( String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isAvtiveInt) {
+    public CreditCard(int id, String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isAvtiveInt) {
+        this.id = id;
+        this.numberCard = numberCard;
+        this.expireDate = expireDate;
+        this.cvv = cvv;
+        this.password = password;
+        this.passwordOnline = passwordOnline;
+        this.isAvtiveInt = isAvtiveInt;
+    }
+
+    public CreditCard(String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isAvtiveInt) {
 
         this.numberCard = numberCard;
         this.expireDate = expireDate;
         this.cvv = cvv;
+        this.password = password;
+        this.passwordOnline = passwordOnline;
+        this.isAvtiveInt = isAvtiveInt;
+    }
+
+ /*   public CreditCard(int id, String numberCard, String password, String passwordOnline, int isAvtiveInt) {
+        this.id = id;
+        this.numberCard = numberCard;
         this.password = password;
         this.passwordOnline = passwordOnline;
         this.isAvtiveInt = isAvtiveInt;
@@ -28,9 +46,9 @@ public class CreditCard {
         this.cvv = cvv;
         this.passwordOnline = passwordOnline;
         this.isAvtiveInt = isAvtiveInt;
-    }
+    }*/
 
-    public CreditCard(int id, Account account, String numberCard, String expireDate, int cvv, String password, String passwordOnline, boolean isActive) {
+    /*public CreditCard(int id, Account account, String numberCard, String expireDate, int cvv, String password, String passwordOnline, boolean isActive) {
         this.id = id;
         this.account = account;
         this.numberCard = numberCard;
@@ -39,13 +57,25 @@ public class CreditCard {
         this.password = password;
         this.passwordOnline = passwordOnline;
         this.isActive = isActive;
-    }
+    }*/
 
     public CreditCard(String numberCard, String expireDate, int cvv, String password, String passwordOnline) {
         this.numberCard = numberCard;
         this.expireDate = expireDate;
         this.cvv = cvv;
         this.password = password;
+        this.passwordOnline = passwordOnline;
+    }
+
+    public int getIsAvtiveInt() {
+        return isAvtiveInt;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPasswordOnline(String passwordOnline) {
         this.passwordOnline = passwordOnline;
     }
 
@@ -76,6 +106,6 @@ public class CreditCard {
     @Override
     public String toString() {
         numberCard = numberCard.substring(0,4) + '-' + numberCard.substring(4,8) + '-' + numberCard.substring(8,12) + '-' + numberCard.substring(12,16);
-        return  numberCard + '\'' ;
+        return   " ID:" + getId() + " "+ '\'' + numberCard + '\'' ;
     }
 }

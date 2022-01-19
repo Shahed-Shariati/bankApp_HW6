@@ -73,11 +73,23 @@ where a.id = 4;
 truncate table customer restart identity ;
 
 
+select c2.id,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive from customer c inner join accoutncustoer a on c.id = a.customer_id
+                 inner join account a2 on a2.id = a.account_id
+                  inner join creditcard c2 on c2.id = a2.credit_card_id
+               where c.id = ?;
 
 
-
-
+SELECT * FROM creditcard where number like '1458789452162546';
 
 drop table transactions;
 
 
+select c2.id,c2.number,c2.password,c2.password2,c2.isactive from customer c inner join accoutncustoer a on c.id = a.customer_id
+  inner join account a2 on a2.id = a.account_id
+   inner join creditcard c2 on c2.id = a2.credit_card_id
+where c.id = 10;
+
+UPDATE creditcard SET number = ? ,expirdate = ?,cvv = ?,password = ?,password2 = ?,isactive = ? WHERE id = ?;
+
+select c2.id,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive from account a inner join creditcard c2 on c2.id = a.credit_card_id
+                where a.id = 6

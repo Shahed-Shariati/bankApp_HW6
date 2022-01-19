@@ -25,7 +25,7 @@ public class Menu {
         System.out.println();
         System.out.println("1:Add transaction");
         System.out.println("2:tranaction");
-        System.out.println("1:Add Customer");
+        System.out.println("3:Edit password");
         System.out.println("1:Add Customer");
         System.out.println("5:Exit");
     }

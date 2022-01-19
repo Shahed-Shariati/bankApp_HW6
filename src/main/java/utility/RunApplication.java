@@ -1,12 +1,13 @@
 package utility;
 
+import java.util.List;
 import java.util.Scanner;
 
-import model.Application;
+import model.CreditCard;
 import model.Customer;
 import model.User;
 import service.*;
-import utility.Menu.*;
+
 public class RunApplication {
     private UserService userService = new UserService();
     ApplicationService applicationService = new ApplicationService();
@@ -92,6 +93,9 @@ private void login(){
 
             }else if(input.equals("2")) {
                 addTransaction(customer.getId(),customer);
+            }else if(input.equals("3")){
+                showCustomerCreditCard(customer);
+                changePassword();
             }else if(input.equals("5")) {
                 break;
             }else {
@@ -143,8 +147,63 @@ private void login(){
         }
     }
     }
+   private void showCustomerCreditCard(Customer customer){
+       List<CreditCard> creditCards = creditCardService.findByCustomerId(customer.getId());
+       for (CreditCard credit:creditCards  ) {
+           System.out.println(credit);
+       }
+   }
+   private void changePassword()
+   {
+       CreditCard creditCard;
+       System.out.println("Choice Credit Card\n Example(1111-1111-1111-1111)");
+       String creditCardNumber = getUserInput();
+       if(Validation.cardNumber(creditCardNumber)){
+           creditCardNumber = Validation.cardNumberReplace(creditCardNumber);
+           creditCard = creditCardService.findByCreditCardNumber(creditCardNumber);
+           System.out.println("1:Change Password");
+           System.out.println("2:Change Password Online");
+           String input = getUserInput();
+           if (input.equals("1")){
+               System.out.println("Enter your old password");
+               System.out.println(creditCard.getExpireDate());
+               String oldPassword = getUserInput();
+               System.out.println("Enter your new password:(max 4 )");
+               String newPassword = getUserInput();
+               if(creditCard.getPassword().equals(oldPassword)){
+                   creditCard.setPassword(newPassword);
+                   setNewPassword(creditCard);
+               }else {
+                   System.out.println("--------------------Your password is Wrong-----------------------");
+               }
+           }else if (input.equals("2")){
+               System.out.println("Enter your old password");
+               System.out.println(creditCard.getExpireDate());
+               String oldPassword = getUserInput();
+               System.out.println("Enter your new password online:");
+               String newPassword = getUserInput();
+               if(creditCard.getPassword().equals(oldPassword)){
+                   creditCard.setPasswordOnline(newPassword);
+                   setNewPassword(creditCard);
+               }else {
+                   System.out.println("--------------------Your password is Wrong-----------------------");
+               }
+           }else {
+               System.out.println("your Choice is wrong");
+           }
+
+       }
 
 
+
+       System.out.println("");
+
+
+   }
+
+    private void setNewPassword(CreditCard creditCard){
+       creditCardService.upDate(creditCard);
+    }
     private int addCreditCard()
     {
         while (true) {
@@ -215,7 +274,7 @@ private void login(){
 
     }
 
-    
+
     public void addTransaction(int id,Customer customer)
     {
 
