@@ -64,6 +64,14 @@ public class UserRepository implements Repository {
  }
     @Override
     public void delete(int id) {
-
+        String query = "DELETE FROM users WHERE id = ?;";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

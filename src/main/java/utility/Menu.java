@@ -9,15 +9,19 @@ public class Menu {
         System.out.println(dotted);
 
     }
+    public static void bossMenu(){
+        System.out.println();
+        System.out.println("1:Add clerk");
+        System.out.println("2:Delete clerk");
+        System.out.println("3:Exit");
 
+    }
     public static void clerkMenu(){
         System.out.println();
         System.out.println("1:Add Customer");
         System.out.println("2:Add Account Customer");
-        System.out.println("3:show trancaction");
-        System.out.println("4:show date transaction account id");
-        System.out.println("5:show customer accounts");
-        System.out.println("6:Exit");
+        System.out.println("3:show date transaction account id");
+        System.out.println("4:Exit");
         System.out.println(dotted);
     }
     public static void customerMenu()

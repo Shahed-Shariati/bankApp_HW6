@@ -6,6 +6,7 @@ import repository.UserRepository;
 public class UserService {
     private UserRepository userRepository = new UserRepository();
     private CustomerService customerService = new CustomerService();
+    private ClerkService clerkService = new ClerkService();
 
     public User login(String userName,String password)
     {
@@ -26,7 +27,7 @@ public class UserService {
         }else if(roleId == 2){
           return  customerService.add(id);
         }else if(roleId == 3){
-          return 0;
+          return clerkService.add(id);
         }
         return 0;
     }

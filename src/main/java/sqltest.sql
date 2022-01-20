@@ -114,3 +114,10 @@ select a2.id,a2.account_number,a2.balance,c2.number,c2.expirdate,c2.cvv,c2.passw
                 inner join users u on u.id = c.user_id
                 inner join creditcard c2 on c2.id = a2.credit_card_id
                 where c.id = 12;
+
+SELECT * FROM clerks c INNER JOIN users u on u.id = c.user_id
+
+select c.id,u.first_name,u.last_name,u.national_code,u.role_id from customer c inner join users u on u.id = c.user_id
+                 where u.role_id = 2
+
+INSERT INTO customer (user_id) VALUES (?) RETURNING id;

@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class AccountCustomerRepository {
+public class AccountCustomerRepository implements Repository {
     private Connection connection = DatabaseConnection.getInstance().getConnection();
     private PreparedStatement preparedStatement;
 
@@ -22,5 +22,18 @@ public class AccountCustomerRepository {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void delete(int id) {
+        String query = "DELETE FROM accoutncustoer WHERE id = ?";
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
