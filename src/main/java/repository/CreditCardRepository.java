@@ -22,8 +22,8 @@ public class CreditCardRepository implements Repository {
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM");
         Date date;
         java.sql.Date sqlDate;
-        String query = "INSERT INTO creditcard (number,expirdate,cvv,password,password2,isactive) " +
-                       "VALUES (?,?,?,?,?,?) RETURNING id";
+        String query = "INSERT INTO creditcard (number,expirdate,cvv,password,password2,isactive,failed_password) " +
+                       "VALUES (?,?,?,?,?,?,?) RETURNING id";
         try {
             date = formatDate.parse(creditCard.getExpireDate());
             sqlDate = new java.sql.Date(date.getTime());
@@ -33,7 +33,8 @@ public class CreditCardRepository implements Repository {
             preparedStatement.setInt(3,creditCard.getCvv());
             preparedStatement.setString(4,creditCard.getPassword());
             preparedStatement.setString(5, creditCard.getPasswordOnline());
-            preparedStatement.setInt(6,1);
+            preparedStatement.setInt(6,0);
+            preparedStatement.setInt(7,0);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next())
             {
@@ -58,7 +59,7 @@ public class CreditCardRepository implements Repository {
             preparedStatement.setInt(3,creditCard.getCvv());
             preparedStatement.setString(4, creditCard.getPassword());
             preparedStatement.setString(5, creditCard.getPasswordOnline());
-            preparedStatement.setInt(6,creditCard.getIsAvtiveInt());
+            preparedStatement.setInt(6,creditCard.getIsActiveInt());
             preparedStatement.setInt(7,creditCard.getId());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -72,7 +73,7 @@ public class CreditCardRepository implements Repository {
 
     public CreditCard findByAccountId(int id)
     {
-        String query = "select c2.id,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive from account a inner join creditcard c2 on c2.id = a.credit_card_id " +
+        String query = "select c2.id,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive,c2.failed_password from account a inner join creditcard c2 on c2.id = a.credit_card_id " +
                 "where a.id = ?;";
         try {
             preparedStatement = connection.prepareStatement(query);
@@ -86,7 +87,8 @@ public class CreditCardRepository implements Repository {
                         resultSet.getInt(4),
                         resultSet.getString(5),
                         resultSet.getString(6),
-                        resultSet.getInt(7));
+                        resultSet.getInt(7),
+                        resultSet.getInt(8));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +97,7 @@ public class CreditCardRepository implements Repository {
     }
 
     public List<CreditCard> findByCustomerId(int customerId){
-       String query = "select c2.id,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive from customer c inner join accoutncustoer a on c.id = a.customer_id " +
+       String query = "select c2.id,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive,c2.failed_password from customer c inner join accoutncustoer a on c.id = a.customer_id " +
                "                 inner join account a2 on a2.id = a.account_id" +
                "                  inner join creditcard c2 on c2.id = a2.credit_card_id" +
                "               where c.id = ?;";
@@ -112,7 +114,8 @@ public class CreditCardRepository implements Repository {
                     resultSet.getInt(4),
                     resultSet.getString(5),
                     resultSet.getString(6),
-                    resultSet.getInt(7)));
+                    resultSet.getInt(7),
+                        resultSet.getInt(8)));
             }
             return creditCards;
         } catch (SQLException e) {
@@ -134,8 +137,9 @@ public class CreditCardRepository implements Repository {
                             resultSet.getString(3),
                             resultSet.getInt(4),
                             resultSet.getString(5),
-                             resultSet.getString(6),
-                            resultSet.getInt(7));
+                            resultSet.getString(6),
+                            resultSet.getInt(7),
+                            resultSet.getInt(8));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -167,4 +171,5 @@ public class CreditCardRepository implements Repository {
            e.printStackTrace();
        }
    }
-}
+
+  }

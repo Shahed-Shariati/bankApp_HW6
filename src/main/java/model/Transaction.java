@@ -12,7 +12,16 @@ public class Transaction {
     private String dateStr;
     private Account accountDestination;
 
-    public Transaction( Account account, Double amount, String status, String type, Date date,Account accountDestination) {
+    public Transaction(int id, Account accountSource, Double amount, String status, String type, Date date) {
+        this.id = id;
+        this.accountSource = accountSource;
+        this.amount = amount;
+        this.status = status;
+        Type = type;
+        this.date = date;
+    }
+
+    public Transaction(Account account, Double amount, String status, String type, Date date, Account accountDestination) {
         this.accountDestination = accountDestination;
         this.accountSource = account;
         this.amount = amount;
@@ -83,5 +92,17 @@ public class Transaction {
 
     public void setAccountDestination(Account accountDestination) {
         this.accountDestination = accountDestination;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                "," + accountSource +
+                ", amount=" + amount +
+                ", status='" + status + '\'' +
+                ", Type='" + Type + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

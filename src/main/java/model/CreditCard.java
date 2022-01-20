@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 public class CreditCard {
     private int id;
     private Account account;
@@ -10,20 +8,21 @@ public class CreditCard {
     private int cvv;
     private String password;
     private String passwordOnline;
-    private boolean isActive;
-    private int isAvtiveInt;
+    private int failed;
+    private int isActiveInt;
 
-    public CreditCard(int id, String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isAvtiveInt) {
+    public CreditCard(int id, String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isActiveInt,int failed) {
         this.id = id;
         this.numberCard = numberCard;
         this.expireDate = expireDate;
         this.cvv = cvv;
         this.password = password;
         this.passwordOnline = passwordOnline;
-        this.isAvtiveInt = isAvtiveInt;
+        this.isActiveInt = isActiveInt;
+        this.failed = failed;
     }
 
-    public CreditCard(String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isAvtiveInt) {
+ /*   public CreditCard(String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isAvtiveInt) {
 
         this.numberCard = numberCard;
         this.expireDate = expireDate;
@@ -31,7 +30,7 @@ public class CreditCard {
         this.password = password;
         this.passwordOnline = passwordOnline;
         this.isAvtiveInt = isAvtiveInt;
-    }
+    }*/
 
  /*   public CreditCard(int id, String numberCard, String password, String passwordOnline, int isAvtiveInt) {
         this.id = id;
@@ -69,11 +68,17 @@ public class CreditCard {
         this.passwordOnline = passwordOnline;
     }
 
-    public int getIsAvtiveInt() {
-        return isAvtiveInt;
+    public int getIsActiveInt() {
+        return isActiveInt;
     }
 
+    public int getFailed() {
+        return failed;
+    }
 
+    public void setFailed(int failed) {
+        this.failed = failed;
+    }
 
     public void setPassword(String password) {
         this.password = password;

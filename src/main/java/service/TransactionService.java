@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class TransactionService {
     private TransactionRepository transactionRepository = new TransactionRepository();
@@ -50,4 +51,28 @@ public class TransactionService {
           }
 
       }
+
+      public void findByAccountNumberAndDate(String accountNumber, String date)  {
+          Date date1 = null;
+          try {
+              date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+          } catch (ParseException e) {
+              e.printStackTrace();
+          }
+          java.sql.Date dateSql = new java.sql.Date(date1.getTime());
+        List<Transaction> transactions =  transactionRepository.findByAccountNumberAndDate(accountNumber,dateSql);
+        if (transactions == null){
+            System.out.println("Transaction not found");
+        }else {
+            for (Transaction transaction:transactions) {
+                System.out.println(transaction);
+
+            }
+        }
+
+      }
+
+
+
+
 }

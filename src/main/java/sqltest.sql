@@ -94,8 +94,14 @@ UPDATE creditcard SET number = ? ,expirdate = ?,cvv = ?,password = ?,password2 =
 select c2.id,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive from account a inner join creditcard c2 on c2.id = a.credit_card_id
                 where a.id = 6;
 
-UPDATE creditcard set failed_password = failed_password + 1;branchcustomer
+UPDATE creditcard set isactive = creditcard.isactive + 1;
+SELECT * FROM creditcard
 
+select a2.id,a2.account_number,a2.balance,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive,c2.id,c2.failed_password from customer c inner join accoutncustoer a on c.id = a.customer_id
+               inner join account a2 on a2.id = a.account_id
+               inner join users u on u.id = c.user_id
+               inner join creditcard c2 on c2.id = a2.credit_card_id
+               where c.id = ?
 
 
 SELECT * FROM creditcard c INNER JOIN account a on c.id = a.credit_card_id
@@ -121,3 +127,29 @@ select c.id,u.first_name,u.last_name,u.national_code,u.role_id from customer c i
                  where u.role_id = 2
 
 INSERT INTO customer (user_id) VALUES (?) RETURNING id;
+
+
+SELECT * FROM account a INNER JOIN transactions t on a.id = t.accountid
+WHERE a.account_number = '82611' AND t.transaction_date > '2022-01-15';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+select a2.id,a2.account_number,a2.balance,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive,c2.id from customer c inner join accoutncustoer a on c.id = a.customer_id
+                inner join account a2 on a2.id = a.account_id
+                inner join users u on u.id = c.user_id
+                inner join creditcard c2 on c2.id = a2.credit_card_id
+                where c.id = 14

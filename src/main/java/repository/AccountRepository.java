@@ -55,8 +55,8 @@ public class AccountRepository implements Repository {
            preparedStatement = connection.prepareStatement(query);
            preparedStatement.setString(1,account.getAccountNumber());
            preparedStatement.setDouble(2,account.getBalance());
-         //  preparedStatement.setInt(3,account.getCreditCard().getId());
-       //    preparedStatement.setInt(3,account.getTypeId());
+        // preparedStatement.setInt(3,account.getCreditCard().getId());
+        // preparedStatement.setInt(3,account.getTypeId());
            preparedStatement.setInt(3,account.getId());
            preparedStatement.executeUpdate();
            preparedStatement.close();
@@ -153,7 +153,7 @@ public class AccountRepository implements Repository {
     }
 
     public List<Account> showCustomerAccount(int customerId){
-        String query = "select a2.id,a2.account_number,a2.balance,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive,c2.id from customer c inner join accoutncustoer a on c.id = a.customer_id\n" +
+        String query = "select a2.id,a2.account_number,a2.balance,c2.number,c2.expirdate,c2.cvv,c2.password,c2.password2,c2.isactive,c2.id,c2.failed_password from customer c inner join accoutncustoer a on c.id = a.customer_id\n" +
                 "inner join account a2 on a2.id = a.account_id\n" +
                 "inner join users u on u.id = c.user_id\n" +
                 "inner join creditcard c2 on c2.id = a2.credit_card_id\n" +
@@ -168,7 +168,8 @@ public class AccountRepository implements Repository {
                         resultSet.getInt(6),
                         resultSet.getString(7),
                         resultSet.getString(8),
-                        resultSet.getInt(9));
+                        resultSet.getInt(9),
+                        resultSet.getInt(11));
                 accounts.add(new Account(resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getDouble(3),
@@ -180,4 +181,6 @@ public class AccountRepository implements Repository {
         }
         return null;
     }
+
+
 }
