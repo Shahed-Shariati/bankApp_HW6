@@ -328,7 +328,7 @@ private void login() throws ParseException {
         while (true)
         {
             System.out.println("Enter back to return menu");
-            System.out.println("Choice your account");
+            System.out.println("Choice your card number");
 
             String cardNumberSource = getUserInput();
             if(cardNumberSource.equalsIgnoreCase("back"))
@@ -365,14 +365,14 @@ private void login() throws ParseException {
                         }
                     }
                 } else {
-                    throw new ValidateCard("---Card Not validate----");
+                    System.out.println("---Card Not validate----");
                 }
             }else {
                 System.out.println("--- Your card is not active------");
             }
             }else
             {
-                throw new ValidateCard("----Card Not validate------");
+                System.out.println("----Card Not validate------");
             }
 
 
