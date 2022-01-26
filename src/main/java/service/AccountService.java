@@ -20,9 +20,14 @@ public class AccountService {
     }
     public int add(String accountNumber,String balance)
     {
-        Account account = new Account(accountNumber,Double.parseDouble(balance));
-      return accountRepository.add(account);
-    }
+        try{
+            Account account = new Account(accountNumber,Double.parseDouble(balance));
+            return accountRepository.add(account);
+        }catch (NumberFormatException e){
+            System.out.println("your amount is wrong");
+        }
+       return 0;
+       }
 
     public void setCreditCardId(int creditCardId,int accountId){
         accountRepository.setCreditCardId(creditCardId,accountId);
@@ -36,14 +41,24 @@ public class AccountService {
             account.setCreditCard(creditCard);
             accountList.add(account);
         }
-        return accountList;
+        if(accountList.isEmpty()){
+            System.out.println(" ------------------List is empty------------------------");
+        }else {
+            return accountList;
+        }
+        return null;
     }
     public Account findByCustomerId(int id){
 
           Account account = accountRepository.findByCustomerId(id);
-          CreditCard creditCard = creditCardService.findByAccountId(account.getId());
-          account.setCreditCard(creditCard);
-          return account;
+          if(account != null) {
+              CreditCard creditCard = creditCardService.findByAccountId(account.getId());
+              account.setCreditCard(creditCard);
+              return account;
+          }else {
+              System.out.println("Account not found");
+          }
+          return null;
     }
     public Account findByCardNumber(String cardNumber){
         return accountRepository.findByCardNumber(cardNumber);

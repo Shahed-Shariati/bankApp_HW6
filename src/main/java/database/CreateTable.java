@@ -56,7 +56,9 @@ public class CreateTable {
               "                last_name VARCHAR(100),\n" +
               "                national_code VARCHAR(10) UNIQUE,\n" +
               "                phone_number VARCHAR(20),\n" +
-              "                address VARCHAR(200),\n" +
+              "                address VARCHAR(200)," +
+              "                 user_name VARCHAR (50)," +
+              "                  password VARCHAR (50),\n" +
               "                FOREIGN KEY (role_id) REFERENCES role(id) );";
       try {
           preparedStatement = connection.prepareStatement(query);

@@ -29,7 +29,9 @@ public class DatabaseConnection {
             }else if(instance.getConnection().isClosed()) {
                 return instance = new DatabaseConnection();
             }
-        }catch (SQLException e){}
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
         return instance;
     }
 

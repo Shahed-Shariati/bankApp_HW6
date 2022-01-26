@@ -2,6 +2,7 @@ package service;
 
 import model.CreditCard;
 import repository.CreditCardRepository;
+import utility.ValidationPassword;
 
 import java.util.List;
 
@@ -9,9 +10,18 @@ public class CreditCardService {
     private CreditCardRepository creditCardRepository = new CreditCardRepository();
     public int add(String numberCard,String expirDate,String cvv,String password,String passwordOnline)
     {
-        int cvvInt = Integer.parseInt(cvv);
-        CreditCard creditCard = new CreditCard(numberCard,expirDate,cvvInt,password,passwordOnline);
-        return creditCardRepository.add(creditCard);
+
+         CreditCard creditCard;
+        try {
+            int cvvInt = Integer.parseInt(cvv);
+            creditCard = new CreditCard(numberCard,expirDate,cvvInt,password,passwordOnline);
+            return creditCardRepository.add(creditCard);
+        }catch (ValidationPassword e){
+            System.out.println("password is contain string");
+        }catch (NumberFormatException e){
+            System.out.println("cvv contain string");
+        }
+         return 0;
     }
     public CreditCard findByCreditCardNumber(String cardNumber)
     {

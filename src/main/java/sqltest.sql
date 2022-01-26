@@ -140,6 +140,15 @@ WHERE a.account_number = '82611' AND t.transaction_date > '2022-01-15';
 
 
 
+SELECT * FROM users WHERE
+
+
+
+
+
+
+
+
 
 
 

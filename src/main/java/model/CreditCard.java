@@ -1,5 +1,7 @@
 package model;
 
+import utility.ValidationPassword;
+
 public class CreditCard {
     private int id;
     private Account account;
@@ -12,6 +14,8 @@ public class CreditCard {
     private int isActiveInt;
 
     public CreditCard(int id, String numberCard, String expireDate, int cvv, String password, String passwordOnline, int isActiveInt,int failed) {
+        validationUserNamePassword(password);
+        validationUserNamePassword(passwordOnline);
         this.id = id;
         this.numberCard = numberCard;
         this.expireDate = expireDate;
@@ -61,6 +65,8 @@ public class CreditCard {
     }*/
 
     public CreditCard(String numberCard, String expireDate, int cvv, String password, String passwordOnline) {
+        validationUserNamePassword(password);
+        validationUserNamePassword(passwordOnline);
         this.numberCard = numberCard;
         this.expireDate = expireDate;
         this.cvv = cvv;
@@ -116,5 +122,17 @@ public class CreditCard {
     public String toString() {
        String numberCard1 = numberCard.substring(0,4) + '-' + numberCard.substring(4,8) + '-' + numberCard.substring(8,12) + '-' + numberCard.substring(12,16);
         return   " ID:" + getId() + " "+ '\'' + numberCard1 + '\'' ;
+    }
+
+    private void validationUserNamePassword(String Password)
+    {
+        char[] chars = Password.toCharArray();
+        for (char c : chars) {
+            if (Character.isDigit(c)) {
+
+            } else {
+                throw new ValidationPassword("phone is not digit");
+            }
+        }
     }
 }

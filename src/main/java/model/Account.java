@@ -1,5 +1,4 @@
 package model;
-
 public class Account {
  private int id;
  private Customer customer;
@@ -19,11 +18,13 @@ public class Account {
 {}
 
  public Account(String accountNumber, double balance) {
+
   this.accountNumber = accountNumber;
   this.balance = balance;
  }
 
  public Account(int id, String accountNumber, double balance, CreditCard creditCard) {
+
   this.id = id;
   this.accountNumber = accountNumber;
   this.balance = balance;
@@ -31,12 +32,14 @@ public class Account {
  }
 
  public Account(int id, String accountNumber, double balance) {
+
   this.id = id;
   this.accountNumber = accountNumber;
   this.balance = balance;
  }
 
  public Account(int id, Customer customer, String accountNumber, double balance, BankBranch bankBranch, String type) {
+
   this.id = id;
   this.customer = customer;
   this.accountNumber = accountNumber;
@@ -86,4 +89,6 @@ public class Account {
           ", creditCard=" + creditCard +
           '}';
  }
+
+
 }

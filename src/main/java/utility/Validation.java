@@ -4,8 +4,17 @@ public class Validation {
     public static boolean cardNumber(String cardNumber)
     {
         cardNumber = cardNumber.replace("-","");
-        if(cardNumber.length() == 16)
+        if(cardNumber.length() == 16){
+            char[] chars = cardNumber.toCharArray();
+            for (char ch:chars) {
+                if(Character.isDigit(ch)){
+                   }else {
+                    return false;
+                }
+            }
             return true;
+        }
+
         return false;
     }
 

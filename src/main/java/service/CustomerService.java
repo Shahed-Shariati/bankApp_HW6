@@ -3,6 +3,7 @@ package service;
 import model.Account;
 import model.Customer;
 import repository.CustomerRepository;
+import utility.ValidationLengthNationalCode;
 
 import java.util.List;
 
@@ -20,16 +21,23 @@ public class CustomerService {
 
         }
     }
-   public void showCustomers(){
-     List<Customer> customers = customerRepository.showCustomer();
-     if(customers.size() !=0 ){
-         for (Customer customer:customers) {
-             System.out.println(customer);
-         }
-     }else{
-         System.out.println("List Empty");
-     }
+   public void showCustomers() {
+       try {
+           List<Customer> customers = customerRepository.showCustomer();
+           if (customers.size() != 0) {
+               for (Customer customer : customers) {
+                   System.out.println(customer);
+               }
+           } else {
+               System.out.println("List Empty");
+           }
+       }catch (ValidationLengthNationalCode e){
+           System.out.println("National code length is not valid ");
+       }
    }
+
+
+
     public Customer findById(int id)
     {
         Customer customer = customerRepository.findById(id);

@@ -1,5 +1,10 @@
 package model;
 
+import utility.ValidationDigitNationalCode;
+import utility.ValidationDigitPhoneNumber;
+import utility.ValidationLengthNationalCode;
+import utility.ValidationLengthPhoneNumber;
+
 public class User {
     private int id;
     private String firstName;
@@ -16,6 +21,8 @@ public class User {
     }
 
     public User(String firstName, String lastName, String nationalCode, String phoneNumber, String address, String userName, String passWord, int role) {
+        validationNationalCode(nationalCode);
+        validationPhoneNumber(phoneNumber);
         this.firstName = firstName;
         this.lastName = lastName;
         this.nationalCode = nationalCode;
@@ -27,6 +34,7 @@ public class User {
     }
 
     public User(int id, String firstName, String lastName, String nationalCode, int role) {
+        validationNationalCode(nationalCode);
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,6 +43,8 @@ public class User {
     }
 
     public User(int id, int role, String firstName, String lastName, String nationalCode, String phoneNumber, String address, String userName, String passWord) {
+        validationNationalCode(nationalCode);
+        validationPhoneNumber(phoneNumber);
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -126,5 +136,33 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", nationalCode='" + nationalCode + '\'' +
                 '}';
+    }
+    private void validationNationalCode(String nationalCode){
+        char[] nationalCodeArray = nationalCode.toCharArray();
+        if(nationalCodeArray.length == 10) {
+            for (char c : nationalCodeArray) {
+                if (Character.isDigit(c)) {
+
+                } else {
+                    throw new ValidationDigitNationalCode("");
+                }
+            }
+        }else {
+            throw new ValidationLengthNationalCode("the length of national code is wrong");
+        }
+    }
+    private void validationPhoneNumber(String phoneNumber){
+        char[] nationalCodeArray = phoneNumber.toCharArray();
+        if(nationalCodeArray.length == 11) {
+            for (char c : nationalCodeArray) {
+                if (Character.isDigit(c) && nationalCodeArray[0]=='0') {
+
+                } else {
+                    throw new ValidationDigitPhoneNumber("phone is not digit");
+                }
+            }
+        }else {
+            throw new ValidationLengthPhoneNumber("phone length");
+        }
     }
 }

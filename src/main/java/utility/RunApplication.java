@@ -25,7 +25,7 @@ public void runApplication() throws ParseException {
     while (true){
        Menu.loginMenu();
        System.out.println("Choice");
-       String input = getUserInput().trim();
+       String input = getUserInput();
        if(input.equals("1")){
          login();
        }else if(input.equals("2"))
@@ -197,6 +197,7 @@ private void login() throws ParseException {
    }
    private void changePassword()
    {
+
        CreditCard creditCard;
        System.out.println("Choice Credit Card\n Example(1111-1111-1111-1111)");
        String creditCardNumber = getUserInput();
@@ -238,8 +239,10 @@ private void login() throws ParseException {
                System.out.println("-----Your card is not active----------------");
            }
 
+       }else {
+           System.out.println("your card number is wrong");
        }
-       System.out.println("");
+   //    System.out.println("your card number is wrong");
    }
 
     private void setNewPassword(CreditCard creditCard){
@@ -338,8 +341,8 @@ private void login() throws ParseException {
             if(Validation.cardNumber(cardNumberSource)) {
                 cardNumberSource = Validation.cardNumberReplace(cardNumberSource);
                 creditCardSource = creditCardService.findByCreditCardNumber(cardNumberSource);
-            if (creditCardSource.getFailed() < 3){
-                    System.out.println("enter your cvv");
+            if (creditCardSource.getFailed() < 3) {
+                System.out.println("enter your cvv");
                 String cvv = getUserInput();
                 System.out.println("enter your expire date");
                 String expireDate = getUserInput();
@@ -349,29 +352,45 @@ private void login() throws ParseException {
                 String passwordOnline = getUserInput();
                 System.out.println("Enter Destinaction card number");
                 String cardNumberDestination = getUserInput();
+                try {
 
-                CreditCard cardCheck = new CreditCard(cardNumberSource, expireDate, Integer.parseInt(cvv), null, passwordOnline);
+                CreditCard cardCheck = new CreditCard(cardNumberSource, expireDate, Integer.parseInt(cvv), "1223", passwordOnline);
                 if (Validation.cardNumber(cardNumberDestination)) {
                     cardNumberSource = Validation.cardNumberReplace(cardNumberSource);
                     creditCardSource = creditCardService.findByCreditCardNumber(cardNumberSource);
                     creditCardDestination = creditCardService.findByCreditCardNumber(cardNumberDestination);
                     if (creditCardSource != null && creditCardDestination != null) {
                         if (checkCards(creditCardSource, cardCheck)) {
-                            transactionService.deposit(Double.parseDouble(amount), cardNumberSource, cardNumberDestination);
-                            transactionService.withdraw(Double.parseDouble(amount), cardNumberSource, cardNumberDestination);
-                            System.out.println("-------------------------------------------------------------------------");
-                            System.out.println("------------------------Transaction success-------------------------------");
-                            System.out.println("-------------------------------------------------------------------------");
+                            try {
+
+
+                                transactionService.deposit(Double.parseDouble(amount), cardNumberSource, cardNumberDestination);
+                                transactionService.withdraw(Double.parseDouble(amount), cardNumberSource, cardNumberDestination);
+                                System.out.println("-------------------------------------------------------------------------");
+                                System.out.println("------------------------Transaction success-------------------------------");
+                                System.out.println("-------------------------------------------------------------------------");
+                            } catch (MoneyNotEnough e) {
+                                System.out.println(" Money not enough");
+                            } catch (AccountNotFound e) {
+                                System.out.println("----------------------Account not found-------------------------ccqqq12");
+                            } catch (NumberFormatException e) {
+                                System.out.println("amount is not valid");
+                            }
+                        }else {
+                            System.out.println("Error");
                         }
                     }
                 } else {
                     System.out.println("---Card Not validate----");
                 }
+            }catch (NumberFormatException e){
+                    System.out.println("cvv not valid");
+                }
             }else {
                 System.out.println("--- Your card is not active------");
             }
-            }else
-            {
+            }else{
+
                 System.out.println("----Card Not validate------");
             }
 
