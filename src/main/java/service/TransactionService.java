@@ -57,10 +57,10 @@ public class TransactionService {
           try {
               date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
           } catch (ParseException e) {
-              e.printStackTrace();
+              System.out.println("Date is wrong");
           }
           java.sql.Date dateSql = new java.sql.Date(date1.getTime());
-        List<Transaction> transactions =  transactionRepository.findByAccountNumberAndDate(accountNumber,dateSql);
+          List<Transaction> transactions =  transactionRepository.findByAccountNumberAndDate(accountNumber,dateSql);
         if (transactions == null){
             System.out.println("Transaction not found");
         }else {

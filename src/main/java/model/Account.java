@@ -1,4 +1,7 @@
 package model;
+
+import utility.ValidationDigitAccountNumber;
+
 public class Account {
  private int id;
  private Customer customer;
@@ -18,13 +21,13 @@ public class Account {
 {}
 
  public Account(String accountNumber, double balance) {
-
+  validationAccountNumber(accountNumber);
   this.accountNumber = accountNumber;
   this.balance = balance;
  }
 
  public Account(int id, String accountNumber, double balance, CreditCard creditCard) {
-
+  validationAccountNumber(accountNumber);
   this.id = id;
   this.accountNumber = accountNumber;
   this.balance = balance;
@@ -32,14 +35,14 @@ public class Account {
  }
 
  public Account(int id, String accountNumber, double balance) {
-
+  validationAccountNumber(accountNumber);
   this.id = id;
   this.accountNumber = accountNumber;
   this.balance = balance;
  }
 
  public Account(int id, Customer customer, String accountNumber, double balance, BankBranch bankBranch, String type) {
-
+  validationAccountNumber(accountNumber);
   this.id = id;
   this.customer = customer;
   this.accountNumber = accountNumber;
@@ -89,6 +92,17 @@ public class Account {
           ", creditCard=" + creditCard +
           '}';
  }
+ private void validationAccountNumber(String accountNumber){
+  char[] nationalCodeArray = accountNumber.toCharArray();
 
+   for (char c : nationalCodeArray) {
+    if (Character.isDigit(c)) {
+
+    } else {
+     throw new ValidationDigitAccountNumber("phone is not digit");
+    }
+   }
+
+ }
 
 }

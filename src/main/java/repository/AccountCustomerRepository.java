@@ -19,7 +19,7 @@ public class AccountCustomerRepository implements Repository {
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("customer not found");;
         }
 
     }

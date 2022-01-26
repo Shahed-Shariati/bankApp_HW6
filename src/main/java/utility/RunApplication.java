@@ -95,8 +95,10 @@ private void login() throws ParseException {
             if(input.equals("1")){
                 customerService.showCustomerAccount(String.valueOf (customer.getId()));
             }else if(input.equals("2")) {
-                showCustomerCreditCard(customer);
-                transaction(customer.getId(),customer);
+
+                    showCustomerCreditCard(customer);
+                    transaction(customer.getId(), customer);
+
             }else if(input.equals("3")){
                 showCustomerCreditCard(customer);
                 changePassword();
@@ -119,7 +121,7 @@ private void login() throws ParseException {
         String input = getUserInput();
         if(input.equals("1")){
           int customerId = addUser("2");
-            System.out.println("------------------------create Account----------------------------------");
+         //   System.out.println("------------------------create Account----------------------------------");
           int accountId = addAccount();
 
               addAccountCustomer(accountId, customerId);
@@ -136,11 +138,18 @@ private void login() throws ParseException {
             if(customerId.equalsIgnoreCase("back")){
                 System.out.println();
             }else {
-                int accountId = addAccount();
-                int customerID = Integer.parseInt(customerId);
-                addAccountCustomer(accountId, customerID);
-                int creditCardId = addCreditCard();
-                setCreditCardId(creditCardId, accountId);
+                try {
+                    int accountId = addAccount();
+                    int customerID = Integer.parseInt(customerId);
+                    if (accountId != 0 && accountId != 0) {
+                        addAccountCustomer(accountId, customerID);
+                        int creditCardId = addCreditCard();
+                        setCreditCardId(creditCardId, accountId);
+                    }
+                }catch (NumberFormatException e){
+                    System.out.println("Customer id is wrong");
+                }
+
             }
         }else if(input.equals("3")){
             showCustomerAccount();
@@ -271,17 +280,21 @@ private void login() throws ParseException {
     }
 
 
-    private int addAccount(){
+    private int addAccount() {
         System.out.println("Enter Account number:");
         String accountNumber = getUserInput();
         System.out.println("Enter  amount ");
         String balance = getUserInput();
         balance = Validation.amount(balance);
-
-       return accountService.add(accountNumber,balance);
-
-
-     }
+        try {
+            return accountService.add(accountNumber, balance);
+        } catch (NumberFormatException e) {
+            System.out.println("amount is wrong");
+        } catch (ValidationDigitAccountNumber e) {
+            System.out.println("Account number is wrong");
+        }
+      return 0;
+    }
     private void setCreditCardId(int creditCardId,int accountId)
     {
         accountService.setCreditCardId(creditCardId,accountId);
@@ -375,6 +388,8 @@ private void login() throws ParseException {
                                 System.out.println("----------------------Account not found-------------------------ccqqq12");
                             } catch (NumberFormatException e) {
                                 System.out.println("amount is not valid");
+                            } catch (ValidationPassword e){
+                                System.out.println("Password is wrong");
                             }
                         }else {
                             System.out.println("Error");

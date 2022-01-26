@@ -20,13 +20,11 @@ public class AccountService {
     }
     public int add(String accountNumber,String balance)
     {
-        try{
+
             Account account = new Account(accountNumber,Double.parseDouble(balance));
             return accountRepository.add(account);
-        }catch (NumberFormatException e){
-            System.out.println("your amount is wrong");
-        }
-       return 0;
+
+
        }
 
     public void setCreditCardId(int creditCardId,int accountId){
